@@ -1,0 +1,456 @@
+:root {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --accent-gold: #fbbf24;
+  --accent-cyan: #22d3ee;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: radial-gradient(circle at top left, #1e1b4b, #0f172a);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Glassmorphism Card */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: 20px;
+  padding: 2rem;
+  background-clip: padding-box;
+}
+
+/* Typography */
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 2rem;
+  text-align: center;
+  letter-spacing: -1px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* Inputs */
+.input-group {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+  align-items: center;
+}
+
+input {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  padding: 0.8rem 1.2rem;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  text-align: center;
+  width: 80px;
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 15px rgba(34, 211, 238, 0.2);
+}
+
+/* Triangle Enclosure - Absolute Layout */
+.triangle-wrapper-absolute {
+  position: relative;
+  width: 860px;
+  /* Increased canvas */
+  height: 940px;
+  /* Increased canvas for Hidden Numbers */
+  margin: 2rem 0;
+  display: flex;
+  /* Centering the SVG if needed, but relative works */
+  justify-content: center;
+}
+
+.triangle-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.3));
+}
+
+.node-absolute {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--glass-border);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  /* Center the node on its coordinate (since coords are top-left usually) */
+  transform: translate(-50%, -50%);
+  /* This centers the node on X,Y */
+  transition: all 0.3s ease;
+}
+
+/* Square variation for Inputs and Bottom Boxes */
+.node-square {
+  border-radius: 12px;
+  /* width/height overridden inline but good to have defaults */
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(145deg, rgba(34, 211, 238, 0.1), rgba(34, 211, 238, 0.05));
+  border-color: rgba(34, 211, 238, 0.3);
+  color: var(--accent-cyan);
+}
+
+.node-absolute:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+  /* Keep centering + scale */
+  border-color: var(--accent-gold);
+  cursor: pointer;
+}
+
+/* Highlighted State for Dependencies */
+.node-absolute.highlighted {
+  border-color: var(--accent-cyan);
+  background: linear-gradient(145deg, rgba(34, 211, 238, 0.3), rgba(34, 211, 238, 0.1));
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
+  transform: translate(-50%, -50%) scale(1.15);
+  /* Slightly bigger pop */
+  z-index: 30;
+  /* Bring to front */
+}
+
+.node-star {
+  position: absolute;
+  color: #ef4444;
+  font-size: 1.5rem;
+  z-index: 20;
+  top: -10px;
+  right: -10px;
+  text-shadow: 0 0 5px rgba(239, 68, 68, 0.5);
+  animation: pulseStar 2s infinite ease-in-out;
+}
+
+@keyframes pulseStar {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* Stats Display */
+.stats-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 600px;
+  margin-top: 2rem;
+}
+
+.stats-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stats-section h3 {
+  margin-top: 0;
+  color: var(--accent-cyan);
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 0.5rem;
+  width: 100%;
+  text-align: center;
+}
+
+.elements-grid {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  /* Default wrap */
+  justify-content: center;
+}
+
+.elements-grid.no-wrap {
+  flex-wrap: nowrap;
+  /* Force single row */
+}
+
+/* Updated Element Column Styles */
+.element-column {
+  border: 1px solid;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.8rem 0.5rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 60px;
+  flex: 1;
+  /* Distribute space evenly */
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  gap: 0.5rem;
+}
+
+.element-column:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.element-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 0.2rem;
+}
+
+.element-count-val {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.element-label {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-align: center;
+  border-top: 1px solid var(--glass-border);
+  padding-top: 0.5rem;
+  width: 100%;
+}
+
+.element-fixed-num {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--accent-gold);
+  border-top: 1px solid var(--glass-border);
+  padding-top: 0.5rem;
+  width: 100%;
+  text-align: center;
+}
+
+.missing-numbers {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.missing-num {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.05);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 1px dashed var(--text-secondary);
+}
+
+.no-missing {
+  color: var(--accent-gold);
+  font-style: italic;
+}
+
+/* Date Picker Customization */
+input[type="date"] {
+  font-family: inherit;
+  color: var(--text-primary);
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--glass-border);
+  padding: 0.8rem;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+/* Search Button */
+.search-btn {
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-cyan));
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2.5rem;
+  color: #0f172a;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(34, 211, 238, 0.3);
+  margin-top: 1rem;
+}
+
+.search-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(251, 191, 36, 0.4);
+}
+
+
+/* Analysis Table Styles */
+.analysis-container {
+  width: 100%;
+  max-width: 860px;
+  /* Match triangle width */
+  margin-top: 2rem;
+  padding: 1.5rem;
+}
+
+.analysis-table {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  /* Divider effect */
+  background: var(--glass-border);
+  border: 1px solid var(--glass-border);
+}
+
+.analysis-row {
+  display: flex;
+  background: rgba(15, 23, 42, 0.6);
+  /* Slightly darker for row BG */
+  min-height: 80px;
+  /* Ensure height fits text */
+}
+
+/* Zebra striping or hover? Let's do simple borders first */
+.analysis-row:not(:last-child) {
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.analysis-cell {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid var(--glass-border);
+}
+
+.analysis-cell:last-child {
+  border-right: none;
+  justify-content: flex-start;
+  /* Description aligns left */
+}
+
+.index {
+  width: 50px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.label-col {
+  width: 150px;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.main-label {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+.sub-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.number-col {
+  width: 100px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  font-family: monospace;
+  /* Monospace for numbers looks good */
+}
+
+.desc-col {
+  flex: 1;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.desc-col ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.desc-col li {
+  margin-bottom: 0.3rem;
+}
+
+.no-data {
+  color: var(--text-secondary);
+  font-style: italic;
+}
