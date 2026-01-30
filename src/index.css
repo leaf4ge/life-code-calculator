@@ -454,3 +454,68 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: var(--text-secondary);
   font-style: italic;
 }
+
+/* Mobile Responsiveness */
+@media (max-width: 900px) {
+  #root {
+    padding: 1rem;
+    overflow-x: hidden;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  /* Scale down the triangle chart */
+  .triangle-wrapper-absolute {
+    transform-origin: top center;
+    transform: scale(0.4);
+    /* Default scale for mobile phones */
+    margin: -250px 0;
+    /* Compensate for whitespace after scaling */
+  }
+
+  /* Analysis Table Stack on Mobile */
+  .analysis-row {
+    flex-direction: column;
+    height: auto;
+    padding: 1rem 0;
+  }
+
+  .analysis-cell {
+    width: 100% !important;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 0.5rem;
+  }
+
+  .analysis-cell:last-child {
+    border-bottom: none;
+  }
+
+  .index {
+    display: none;
+    /* Hide index on small screens to save space */
+  }
+
+  /* Stats Container */
+  .stats-container {
+    width: 100%;
+    margin-top: 5rem;
+    /* Space for the scaled triangle */
+  }
+
+  .element-label {
+    font-size: 0.7rem;
+    /* Smaller text for elements */
+  }
+}
+
+@media (min-width: 450px) and (max-width: 900px) {
+
+  /* Tablet / Large Phone adjustments */
+  .triangle-wrapper-absolute {
+    transform: scale(0.6);
+    margin: -150px 0;
+  }
+}
