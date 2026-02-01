@@ -471,8 +471,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     transform-origin: top center;
     transform: scale(0.4);
     /* Default scale for mobile phones */
-    margin: -250px 0;
-    /* Compensate for whitespace after scaling */
+    margin: 0 0 -350px 0;
+    /* Only negative bottom margin to reduce gap */
   }
 
   /* Analysis Table Stack on Mobile */
@@ -501,7 +501,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   /* Stats Container */
   .stats-container {
     width: 100%;
-    margin-top: 5rem;
+    margin-top: 2rem;
     /* Space for the scaled triangle */
   }
 
