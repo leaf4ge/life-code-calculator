@@ -10,7 +10,9 @@
   --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -101,6 +103,14 @@ input:focus {
   outline: none;
   border-color: var(--accent-cyan);
   box-shadow: 0 0 15px rgba(34, 211, 238, 0.2);
+}
+
+/* Date Field Override */
+.date-field {
+  width: auto !important;
+  /* Force override */
+  min-width: 0;
+  padding: 0.8rem 0.5rem;
 }
 
 /* Triangle Enclosure - Absolute Layout */
