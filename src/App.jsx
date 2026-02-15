@@ -3,6 +3,7 @@ import DateInput from './components/DateInput';
 import TriangleDisplay from './components/TriangleDisplay';
 import StatsDisplay from './components/StatsDisplay';
 import AnalysisDisplay from './components/AnalysisDisplay';
+import DownloadButton from './components/DownloadButton';
 import { calculateLifeCode } from './utils/numerology';
 
 function App() {
@@ -85,6 +86,9 @@ function App() {
           <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
             <AnalysisDisplay data={result} />
           </div>
+
+          {/* PDF Download Button */}
+          <DownloadButton targetRef={resultsRef} />
         </div>
       )}
     </div>
