@@ -330,7 +330,7 @@ const AnalysisDisplay = ({ data }) => {
             width: '100%',
             maxWidth: '1600px', // Increased from 1200px to allow more breathing room
             margin: '2rem auto',
-            padding: '0 2rem'   // Increased side padding
+            padding: '0 1rem'   // Reduce side padding for better mobile fit (was 2rem)
         }}>
 
             <div className="analysis-grid" style={{
@@ -341,14 +341,14 @@ const AnalysisDisplay = ({ data }) => {
                 alignItems: 'flex-start'
             }}>
                 {/* Left Column: Personal Analysis */}
-                <div className="left-column" style={{ flex: '1 1 500px', minWidth: '350px' }}>
+                <div className="left-column" style={{ flex: '1 1 500px', minWidth: '300px', maxWidth: '100%' }}>
                     <LifePathSection lifePathNumber={lifePathNumber} />
                     <MissingNumbersSection missingNumbers={missingNumbers} />
                     <FiveElementsSection fiveElements={fiveElements} lifePathNumber={lifePathNumber} />
                 </div>
 
                 {/* Right Column: 81 Combinations */}
-                <div className="right-column" style={{ flex: '1 1 500px', minWidth: '350px' }}>
+                <div className="right-column" style={{ flex: '1 1 500px', minWidth: '300px', maxWidth: '100%' }}>
                     <div className="analysis-container glass-card animate-fade-in" style={{ animationDelay: '1.4s', height: '100%' }}>
                         <h3 style={{ textAlign: 'center', color: 'var(--accent-gold)', marginBottom: '1rem' }}>
                             聯合數字解析 (81組)
