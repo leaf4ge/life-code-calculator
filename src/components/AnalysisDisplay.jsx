@@ -3,6 +3,7 @@ import numberMeanings from '../data/number_meanings.json';
 import missingMeanings from '../data/missing_numbers.json';
 import lifePathMeanings from '../data/life_path.json';
 import fiveElementMeanings from '../data/five_elements.json';
+import fiveElementRoles from '../data/five_elements_roles.json';
 
 // Configuration of the 13 Combinations
 const ANALYSIS_CONFIG = [
@@ -228,34 +229,55 @@ const FiveElementsSection = ({ fiveElements, lifePathNumber }) => {
                     const isSelf = index === 0;
                     const standard = isSelf ? 4 : 3;
 
+                    // Map index to role key
+                    const roleKeys = ['self', 'output', 'wealth', 'officer', 'resource'];
+                    const roleKey = roleKeys[index];
+                    const roleData = fiveElementRoles[roleKey];
+
                     // Determining status based on count and standard
                     let status = null;
                     let content = [];
                     let statusColor = 'inherit';
                     let statusBg = 'rgba(255,255,255,0.1)';
 
+                    // Base content from Element meanings
+                    let baseContent = [];
+
                     if (count === 0) {
                         status = '缺失 (0)';
-                        content = data.zero || [];
+                        baseContent = data.zero || [];
                         statusColor = '#f87171';
                         statusBg = 'rgba(239, 68, 68, 0.2)';
                     } else if (count > standard) {
                         status = `過旺 (>${standard})`;
-                        content = data.high || [];
+                        baseContent = data.high || [];
                         statusColor = '#fbbf24';
                         statusBg = 'rgba(234, 179, 8, 0.2)';
                     } else if (count < standard) {
                         status = `偏弱 (<${standard})`;
-                        content = data.low || [];
+                        baseContent = data.low || [];
                         statusColor = '#60a5fa'; // Light Blue
                         statusBg = 'rgba(96, 165, 250, 0.2)';
                     } else {
                         // Exact match to standard
                         status = `平衡 (${standard})`;
-                        content = data.balanced || [];
+                        baseContent = data.balanced || [];
                         statusColor = '#4ade80';
                         statusBg = 'rgba(74, 222, 128, 0.2)';
                     }
+
+                    // Append Role-specific content based on status
+                    // Note: JSON keys are 'zero', 'high', 'low', 'balanced' matching logic
+                    let roleContent = [];
+                    if (roleData) {
+                        if (count === 0 && roleData.zero) roleContent = roleData.zero;
+                        else if (count > standard && roleData.high) roleContent = roleData.high;
+                        else if (count < standard && roleData.low) roleContent = roleData.low;
+                        else if (count === standard && roleData.balanced) roleContent = roleData.balanced;
+                    }
+
+                    // Combine: Element Meanings + Role Meanings
+                    content = [...baseContent, ...roleContent];
 
                     // Only show detailed list if not balanced, or show balanced msg if balanced
                     // User wants to see valid info. 
