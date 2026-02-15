@@ -32,6 +32,16 @@ body {
   isolation: isolate;
 }
 
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  gap: 1rem;
+}
+
 /* Glassmorphism Card */
 .glass-card {
   background: var(--glass-bg);
@@ -482,8 +492,18 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 /* Mobile Responsiveness */
 @media (max-width: 900px) {
   #root {
-    padding: 1rem;
+    padding: 0;
     overflow-x: hidden;
+  }
+
+  .app-container {
+    padding: 0.5rem !important;
+  }
+
+  .glass-card {
+    padding: 1rem;
+    /* Reduce card padding on mobile */
+    border-radius: 12px;
   }
 
   h1 {
@@ -500,26 +520,51 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   }
 
   /* Analysis Table Stack on Mobile */
+  /* Analysis Table Stack on Mobile - Optimized */
   .analysis-row {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     height: auto;
-    padding: 1rem 0;
+    padding: 0.5rem 0;
   }
 
-  .analysis-cell {
-    width: 100% !important;
-    border-right: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  /* Label: 40% width */
+  .analysis-cell.label-col {
+    width: 40% !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: none;
     padding: 0.5rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Number: 60% width (next to label) */
+  .analysis-cell.number-col {
+    width: 60% !important;
+    border-right: none;
+    border-bottom: none;
+    padding: 0.5rem;
+    justify-content: flex-start;
+    /* Align left to be closer to label or center? Let's try center-left */
+    padding-left: 1rem;
+  }
+
+  /* Description: Full width (new line) */
+  .analysis-cell.desc-col {
+    width: 100% !important;
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 0.8rem;
+    justify-content: flex-start;
   }
 
   .analysis-cell:last-child {
     border-bottom: none;
   }
 
+  /* Hide index on small screens */
   .index {
     display: none;
-    /* Hide index on small screens to save space */
   }
 
   /* Stats Container */

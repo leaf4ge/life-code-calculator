@@ -26,7 +26,7 @@ const DateInput = ({ onDateChange }) => {
     };
 
     return (
-        <div className="glass-card animate-fade-in" style={{ padding: '1rem', width: '100%', maxWidth: '500px' }}>
+        <div className="glass-card animate-fade-in" style={{ width: '100%', maxWidth: '500px' }}>
             <label style={{
                 display: 'block',
                 fontSize: '1.1rem',

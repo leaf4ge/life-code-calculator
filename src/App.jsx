@@ -44,14 +44,8 @@ function App() {
   }, [result]);
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
+    <div className="app-container" style={{
       justifyContent: result ? 'flex-start' : 'center',
-      alignItems: 'center',
-      padding: '2rem', // Restore padding here
-      gap: '1rem'
     }}>
       <div className="glass-card" style={{ marginBottom: '2rem', padding: '1rem 2rem' }}>
         <h1 style={{ margin: 0 }}>生命密碼計算器</h1>
