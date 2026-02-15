@@ -14,24 +14,45 @@ function App() {
   // New state for Five Elements highlighting
   const [highlightedElement, setHighlightedElement] = useState(null);
 
-  const handleDateChange = (d, m, y) => {
+  // Ref for scrolling to results
+  const resultsRef = React.useRef(null);
+
+  // Stable handler to prevent unnecessary re-renders in DateInput
+  const handleDateChange = React.useCallback((d, m, y) => {
     setDay(d);
     setMonth(m);
     setYear(y);
-    if (result) setResult(null);
-  };
+    setResult(null); // Always clear result on edit
+  }, []);
 
   const handleCalculate = () => {
     if (day && month && year) {
       const calcResult = calculateLifeCode(day, month, year);
       setResult(calcResult);
+      // Determine if numbers are valid (basic check)
+      // Actually calculateLifeCode returns object even if NaNs in some edge cases but input fields should strictly be numbers now
     } else {
       alert('請先選擇完整的出生日期');
     }
   };
 
+  // Auto-scroll when result is set
+  React.useEffect(() => {
+    if (result && resultsRef.current) {
+      resultsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [result]);
+
   return (
-    <>
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: result ? 'flex-start' : 'center',
+      alignItems: 'center',
+      padding: '2rem', // Restore padding here
+      gap: '1rem'
+    }}>
       <div className="glass-card" style={{ marginBottom: '2rem', padding: '1rem 2rem' }}>
         <h1 style={{ margin: 0 }}>生命密碼計算器</h1>
         <p style={{ textAlign: 'center', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>
@@ -51,7 +72,7 @@ function App() {
       </div>
 
       {result && (
-        <>
+        <div ref={resultsRef} style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div className="main-display-container">
             {/* TriangleDisplay */}
             <TriangleDisplay
@@ -70,9 +91,9 @@ function App() {
           <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
             <AnalysisDisplay data={result} />
           </div>
-        </>
+        </div>
       )}
-    </>
+    </div>
   );
 }
 

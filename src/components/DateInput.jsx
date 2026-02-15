@@ -26,7 +26,7 @@ const DateInput = ({ onDateChange }) => {
     };
 
     return (
-        <div className="glass-card animate-fade-in" style={{ padding: '1.5rem', width: '100%', maxWidth: '500px' }}>
+        <div className="glass-card animate-fade-in" style={{ padding: '1rem', width: '100%', maxWidth: '500px' }}>
             <label style={{
                 display: 'block',
                 fontSize: '1.1rem',
@@ -45,11 +45,11 @@ const DateInput = ({ onDateChange }) => {
                 <input
                     type="number"
                     inputMode="numeric"
-                    placeholder="年 (YYYY)"
-                    value={year}
-                    onChange={handleYearChange}
+                    placeholder="日 (DD)"
+                    value={day}
+                    onChange={handleDayChange}
                     className="date-field"
-                    style={{ flex: 2, textAlign: 'center', minWidth: '80px' }}
+                    style={{ flex: 1, textAlign: 'center', minWidth: '50px' }}
                 />
                 <span style={{ fontSize: '1.5rem', opacity: 0.5 }}>/</span>
                 <input
@@ -59,17 +59,17 @@ const DateInput = ({ onDateChange }) => {
                     value={month}
                     onChange={handleMonthChange}
                     className="date-field"
-                    style={{ flex: 1, textAlign: 'center', minWidth: '60px' }}
+                    style={{ flex: 1, textAlign: 'center', minWidth: '50px' }}
                 />
                 <span style={{ fontSize: '1.5rem', opacity: 0.5 }}>/</span>
                 <input
                     type="number"
                     inputMode="numeric"
-                    placeholder="日 (DD)"
-                    value={day}
-                    onChange={handleDayChange}
+                    placeholder="年 (YYYY)"
+                    value={year}
+                    onChange={handleYearChange}
                     className="date-field"
-                    style={{ flex: 1, textAlign: 'center', minWidth: '60px' }}
+                    style={{ flex: 1.5, textAlign: 'center', minWidth: '70px' }}
                 />
             </div>
         </div>
