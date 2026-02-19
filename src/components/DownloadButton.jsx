@@ -22,9 +22,9 @@ const DownloadButton = ({ targetRef }) => {
             clone.style.width = element.scrollWidth + 'px';
             clone.style.height = 'auto'; // Let it expand naturally
             clone.style.zIndex = '-1';
-            clone.style.background = '#0f172a'; // Ensure background for dark mode
+            clone.style.background = '#0f172a'; // Ensure background is set
 
-            // Copy canvas content manually (as cloneNode doesn't copy canvas state)
+            // Copy canvas content manually
             const canvases = element.querySelectorAll('canvas');
             const cloneCanvases = clone.querySelectorAll('canvas');
             canvases.forEach((canvas, index) => {
@@ -42,7 +42,7 @@ const DownloadButton = ({ targetRef }) => {
 
             // 3. Capture the full content
             const canvas = await html2canvas(clone, {
-                scale: 2, // High resolution
+                scale: 2, // Keep good quality
                 useCORS: true,
                 backgroundColor: '#0f172a',
                 logging: false,
@@ -55,37 +55,52 @@ const DownloadButton = ({ targetRef }) => {
             // 4. Clean up DOM
             document.body.removeChild(clone);
 
-            // 5. Generate PDF with Pagination (A4)
-            const imgData = canvas.toDataURL('image/png');
-
-            // A4 Dimensions in mm
-            const pdfWidth = 210;
-            const pdfHeight = 297;
-
+            // 5. Generate PDF with Slicing strategy
+            const pdfWidth = 210; // A4 width in mm
+            const pdfHeight = 297; // A4 height in mm
             const pdf = new jsPDF('p', 'mm', 'a4');
 
-            // Calculate dimensions of the image on the PDF
-            const imgProps = pdf.getImageProperties(imgData);
-            const imgWidth = imgProps.width;
-            const imgHeight = imgProps.height;
+            const imgWidth = canvas.width;
+            const imgHeight = canvas.height;
 
-            // Scale content to fit A4 width
-            const contentWidth = pdfWidth;
-            const contentHeight = (imgHeight * contentWidth) / imgWidth;
+            // Calculate content height in PDF units if fitted to width
+            const contentHeightInPdf = (imgHeight * pdfWidth) / imgWidth;
 
-            let heightLeft = contentHeight;
-            let position = 0;
+            // Calculate how many pixels of the source canvas correspond to one PDF page height
+            const pageHeightInPixels = (imgWidth * pdfHeight) / pdfWidth;
 
-            // Add first page
-            pdf.addImage(imgData, 'PNG', 0, position, contentWidth, contentHeight);
-            heightLeft -= pdfHeight;
+            let currentY = 0; // Pixels from top of source canvas
 
-            // Loop for subsequent pages
-            while (heightLeft > 0) {
-                position = heightLeft - contentHeight; // e.g., -297, -594...
-                pdf.addPage();
-                pdf.addImage(imgData, 'PNG', 0, position, contentWidth, contentHeight);
-                heightLeft -= pdfHeight;
+            while (currentY < imgHeight) {
+                // Determine slice height (full page or remaining)
+                const remainingHeight = imgHeight - currentY;
+                const sliceHeight = Math.min(pageHeightInPixels, remainingHeight);
+
+                // Create a temp canvas for this slice
+                const sliceCanvas = document.createElement('canvas');
+                sliceCanvas.width = imgWidth;
+                sliceCanvas.height = sliceHeight;
+
+                const ctx = sliceCanvas.getContext('2d');
+                // Draw specific slice from source canvas
+                // sourceX, sourceY, sourceWidth, sourceHeight, destX, destY, destWidth, destHeight
+                ctx.drawImage(
+                    canvas,
+                    0, currentY, imgWidth, sliceHeight,
+                    0, 0, imgWidth, sliceHeight
+                );
+
+                // Convert slice to compressed JPEG
+                const sliceData = sliceCanvas.toDataURL('image/jpeg', 0.8);
+
+                // Calculate height of this slice in PDF mm
+                const sliceHeightInPdf = (sliceHeight * pdfWidth) / imgWidth;
+
+                // Add to PDF
+                if (currentY > 0) pdf.addPage();
+                pdf.addImage(sliceData, 'JPEG', 0, 0, pdfWidth, sliceHeightInPdf);
+
+                currentY += pageHeightInPixels;
             }
 
             pdf.save('life-code-analysis.pdf');
